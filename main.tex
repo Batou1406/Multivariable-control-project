@@ -1,0 +1,68 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{vmargin}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{url}
+\usepackage[font=itshape]{quoting}
+\usepackage[T1]{fontenc} 
+\usepackage[sorting=none]{biblatex}
+\usepackage{csquotes}
+\usepackage{float}
+\addbibresource{biblio.bib}
+
+\setmarginsrb{2 cm}{2 cm}{2 cm}{2 cm} {1.1 cm}{1.1 cm}{1 cm}{1.5 cm}
+
+\title{MPC report}
+\author{Baptiste Savioz }
+\date{January 2022}
+
+\setcounter{MaxMatrixCols}{20}
+\begin{document}
+
+
+\label{page:titre}
+\input{0. Titre}
+
+\newpage
+\tableofcontents
+\newpage
+
+
+\section{Introduction and presentation of the system dynamics}
+\label{sec:dynamics}
+\input{1. dynamics}
+
+\section{Linearization}
+\label{sec:lineraization}
+\input{2. linearization}
+
+\section{Design MPC controllers for each sub-system}
+\label{sec:controller}
+\input{3. controller}
+
+\section{Simulation with nonlinear rocket}
+\label{sec:simulation}
+\input{4. simulation}
+
+\section{Offset-free tracking}
+\label{sec:tracking}
+\input{5. tracking}
+
+\section{Nonlinear MPC}
+\label{sec:nonlinearsec}
+\input{6. nonlinear}
+
+\section{Conclusion}
+\label{sec:cocnlcusion}
+\input{7. conclusion}
+
+
+\newpage
+\printbibliography 
+
+\end{document}
