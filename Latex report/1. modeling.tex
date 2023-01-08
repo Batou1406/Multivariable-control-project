@@ -1,8 +1,145 @@
 \subsection{Problem definition}
+\subsubsection*{System's variable}
 \begin{itemize}
-    \item Distance $s$ : $s \in \mathbb{R}$
-    \item Lateral error $d$ : $d \in \mathbb{R}$
-    \item heading error $s$ : $\theta_e \in \mathbb{R}$
+    \item Reference path $\pi$, $\pi : \mathbb{R} \longrightarrow \mathbb{R}^3, \quad \pi(s_\pi) = (x_\pi, y_\pi,\theta_\pi)$
+    \item Distance $s$ : $s \in \mathbb{R}$, distance along the path corresponding to the vehicle’s position projections.
+    \item Lateral error $d$ : $d \in \mathbb{R},\quad d = ||P_r - P_{r,\pi}||$, distance between the path and the vehicle.
+    \item heading error $s$ : $\theta_e \in \mathbb{R}, \quad \theta_e = (\theta - \theta_\pi)$, difference between vehicle yaw angle and path's orientation.
+    \item Longitudinal speed $v$ : $v \in \mathbb{R}^+$
+    \item Longitudinal speed reference $v_{ref}$ : $v_{ref} \in \mathbb{R}^+$
+    \item Steering wheel position $\phi$ : $\phi \in \mathbb{R}$
+    \item Steering wheel reference $\phi_{ref}$ : $\phi_{ref} \in [-4\pi,4\pi]$
+    \item Path's curvature $\kappa$
 \end{itemize}
 
-\includegraphics[width=0.4\textwidth]{Latex report/}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{Latex report/image/system_def.png}
+    \caption{Coordinate system}
+    \label{fig:sys_def}
+\end{figure}
+
+\subsubsection*{System's model}
+With the variable defined above, one may write the dynamic of the system with the following equations :
+\begin{align}
+    \dot{s} &= \frac{v cos(\theta_e)}{1 - d\kappa(s)}\\
+    \dot{d} &= v sin(\theta_e)\\
+    \dot{\theta_e} &= \frac{v}{L}tan(\frac{\phi}{16}) - \kappa(s)\dot{s}\\
+    \dot{v} &= \sigma_v (v_{ref} - v)\\
+    \dot{\phi} &= \sigma_{ref} (\phi_{ref} - \phi)\\
+\end{align}
+\\
+In the following, state measurement is assumed unless stated otherwise and the states and control input of the system are :
+\begin{align}
+    \bold{x} &= [x_1, x_2, x_3, x_4, x_5] = [s,d,\theta_e, v, \phi]\\
+    \bold{u} &= [u_1, u_2] = [v_{ref}, \phi_{ref}]\\
+    \bold{y} &= \bold{x}
+\end{align}
+
+
+\subsection{Questions}
+\subsubsection*{Question 0.1 : Rewrite the non-linear model in the standart form $\bold{\dot{x}} = f(\bold{x}, \bold{u})$}
+\begin{equation}
+    \left[ {\begin{array}{c}
+        \dot{x_1}\\
+        \dot{x_2}\\
+        \dot{x_3}\\
+        \dot{x_4}\\
+        \dot{x_5}\\
+    \end{array} } \right]
+    =
+    \left[ {\begin{array}{c}
+        \frac{x_4 cos(x_3)}{1 - x_2\kappa(s)}\\
+        x_4 sin(x_3)\\
+        \frac{x_4}{L}tan(\frac{x_5}{16}) - \frac{\kappa(x) x_4 cos(x_3)}{1 - x_2 \kappa(s)}\\
+        \sigma_v (u_1 - x_4)\\
+        \sigma_{ref} (u_2 - x_5)\\
+    \end{array} } \right]
+\end{equation}
+
+
+
+\subsubsection*{Question 0.2 : Given the chosen state space, why it wouldn’t be appropriate linearizing the system around a nominal point.}
+There are no such point that are good around the whole trajectory.
+
+
+
+\subsubsection*{Question 0.3 : Calculate the nominal trajectory representing the constant-speed perfect tracking situation (that is, a situation where the vehicle drives perfectly on the path and at a constant speed $\bold{v_{ref}}$ ) for a path of constant curvature $\bold{\kappa_{ref}}$.}
+Several assumption are made that implies the following :
+\begin{itemize}
+    \item $\kappa(s) \longrightarrow \kappa_{ref}$
+    \item $v(s) \longrightarrow v_{ref}$
+    \item Vehicle drives perfectly on the the path $\longrightarrow$ no error and no error dynamics ($d=0, \dot{d}=0, \theta_e=0, \dot{\theta_e}=0$)
+\end{itemize}
+
+\begin{equation}
+    \bar{x}
+    =
+    \left[ {\begin{array}{c}
+        \bar{x_1}(t)\\
+        \bar{x_2}(t)\\
+        \bar{x_3}(t)\\
+        \bar{x_4}(t)\\
+        \bar{x_5}(t)\\
+    \end{array} } \right]
+    =
+    \left[ {\begin{array}{c}
+        u_1 t + s_0\\
+        0\\
+        0\\
+        u_1\\
+        16 tan^{-1}(\kappa_{ref} L)\\
+    \end{array} } \right]
+\end{equation}
+
+
+
+\subsubsection*{Question 0.4 : Linearize the system around such a nominal trajectory.}
+By using T
+\begin{align}
+    A &= 
+    \left[ {\begin{array}{cccc}
+        \frac{\partial f_1}{\partial x_1} & \frac{\partial f_1}{\partial x_2} & \cdots & \frac{\partial f_1}{\partial x_n}\\
+        \frac{\partial f_2}{\partial x_1} & \frac{\partial f_2}{\partial x_2} & \cdots & \frac{\partial f_2}{\partial x_n}\\
+        \vdots & \vdots & \ddots & \vdots\\
+        \frac{\partial f_n}{\partial x_1} & \frac{\partial f_n}{\partial x_2} & \cdots & \frac{\partial f_n}{\partial x_n}\\
+    \end{array} } \right] = 
+    \left[ {\begin{array}{ccccc}
+        0 &\frac{\kappa_{ref} x_4 cos(x_3)}{(1 -x_2\kappa_{ref})^2} &\frac{-x_4sin(x_3)}{1-x_2\kappa_{ref}} &1 &0 \\
+        0 &0 &x_4cos(x_3) &0 &0\\
+        -\kappa_{ref} &\frac{-\kappa_{ref}x_4 cos(x_3)}{(1 - x_2\kappa_{ref})^2} &\frac{\kappa_{ref}x_4 sin(x_3)}{1 - x_2\kappa_{ref}} &0 & \frac{x_4}{16 L cos^2(x_5)}\\
+        0 &0 &0 &-\sigma_v &0\\
+        0 &0 &0 &0 &-\sigma_{\phi}
+    \end{array} } \right]
+\end{align}
+\begin{align}
+    B &= 
+    \left[ {\begin{array}{cc}
+        \frac{\partial f_1}{\partial u_1} & \frac{\partial f_1}{\partial u_2}\\
+        \frac{\partial f_2}{\partial u_1} & \frac{\partial f_2}{\partial u_2}\\
+        \vdots & \vdots \\
+        \frac{\partial f_n}{\partial u_1} & \frac{\partial f_n}{\partial u_2}\\
+    \end{array} } \right]
+    = 
+    \left[ {\begin{array}{cc}
+        0 &0\\
+        0 &0\\
+        0 &0\\
+        \sigma_v &0\\
+        0 &\sigma_{\phi}\\
+    \end{array} } \right]
+\end{align}
+
+
+
+Finally, because state measurement is assumed, $C$ is simply the idendity matrix, while $D = 0$. The system can be written : 
+\begin{align}
+    \dot{x} &= Ax + Bu\\
+    y &= Cx + Du
+\end{align}
+
+
+\subsubsection*{Question 0.5 : Discretize the system using Euler approximation.}
+At first, one need to rewrite the state dynamic arround
+
+
