@@ -67,6 +67,7 @@ Then by placing the poles of the observer, one may find the following observer g
 \end{equation}
 
 \subsection{Provide a screen shot of your final Simulink scheme and the submodules you had to complete.}
+
 \begin{figure}[H]
     \centering
     \includegraphics[width = 0.8\linewidth]{Latex report/image/ex2Simulink.png}
@@ -112,6 +113,7 @@ Then by placing the poles of the observer, one may find the following observer g
 \end{figure}
 
 \subsection{Report the simulation results for the proposed values.}
+The simulation with the proposed values is very satisfactory, the path is followed perfectly, with almost no visible errors. In the estimation of the $x_3$ state, there are a tiny bit of irregularities. This could be corrected with a little bit of tuning, but it is not a problem for the control. We can see that the speed is almost constant (less than 1\% variation), so the vehicle is on time on the path, which means that there is very little error in the other variables.
 
 \begin{figure}[H]
     \centering
@@ -177,6 +179,8 @@ The value of the LQR gain obtained by solving the Riccati equation are :
     \end{array}}\right]
 \end{equation}
 
+This time, the vehicle is no longer tracked on the path and control is completely lost. This is partly due to the fact that the control of $x_3$ is aggressive while this variable is not measured but estimated. There is a discrepancy between the real and assumed initial state. The observer is too slow to correct this error and the control gets out of hand.
+
 \begin{figure}[H]
     \centering
      \begin{subfigure}[b]{0.45\textwidth}
@@ -211,6 +215,18 @@ The value of the LQR gain obtained by solving the Riccati equation are :
 
 
 \subsection{Is the proposed placement for the observation close loop poles appropriate? why? If not,propose a new set of poles to improve the observation performance.}
+
+As mentioned above, the control of the vehicle with these new parameters failed because the observer was too slow to correct the error in the estimation of the initial state and so the control got carried away and could not catch up. One solution is to impose a more aggressive dynamic on the estimation of the initial state on the observer. In the results below, the poles of the observer have been chosen to be 1\% of the poles of the system dynamics.
+\begin{equation}
+    \text{Observer poles :}
+    \left[\begin{array}{c}
+         0.01\\
+         0.00988\\
+         0.000154\\
+         0.00994 + 205e-5i\\
+         0.00994 - 205e-5i\\
+    \end{array}\right]
+\end{equation}
 
 \begin{figure}[H]
     \centering
