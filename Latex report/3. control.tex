@@ -113,6 +113,35 @@ Then by placing the poles of the observer, one may find the following observer g
 
 \subsection{Report the simulation results for the proposed values.}
 
+\begin{figure}[H]
+    \centering
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{Latex report/image/ex2/input.png}
+         \caption{Control input}
+         \label{fig:input}
+     \end{subfigure}
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{Latex report/image/ex2/trajectory.png}
+         \caption{Trajectory}
+         \label{fig:traj}
+     \end{subfigure}
+     \begin{subfigure}[b]{0.8\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{Latex report/image/ex2/state.png}
+         \caption{Observed state}
+         \label{fig:State}
+     \end{subfigure}
+     \begin{subfigure}[b]{0.8\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{Latex report/image/ex2/obs.png}
+         \caption{Comparison with state measurement}
+         \label{fig:Obs}
+     \end{subfigure}
+    \caption{Simulation of the LQR regulator with an observer and new pole placement}
+    \label{fig:sim}
+\end{figure}
 
 \subsection{The proposed value of Q1 intends to assign very little importance to the error deriving from x1. Could you explain why doing this might make sense?}
 First of all, $x_1$ represents $s$, the distance travelled along the path, which is a function of all the other variables (indirectly for $x_5$), whereas none of the other variables is a function of $x_1$. Therefore, all corrections to the other variables correct $x_1$, whereas corrections to $x_1$ do not correct the other variables. For example, correcting $x_2$ or $x_3$, which represent tracking errors, allows $X_1$ to be controlled efficiently. Indeed, if $x_2$ and $x_3$ are zero, then we are sure to be on the path.
@@ -152,30 +181,30 @@ The value of the LQR gain obtained by solving the Riccati equation are :
     \centering
      \begin{subfigure}[b]{0.45\textwidth}
          \centering
-         \includegraphics[width=\textwidth]{Latex report/image/ex2/inputNewpole.png}
+         \includegraphics[width=\textwidth]{Latex report/image/ex2/input2.png}
          \caption{Control input}
-         \label{fig:NPinput}
+         \label{fig:2input}
      \end{subfigure}
      \begin{subfigure}[b]{0.45\textwidth}
          \centering
-         \includegraphics[width=\textwidth]{Latex report/image/ex2/trajectoryNewpole.png}
+         \includegraphics[width=\textwidth]{Latex report/image/ex2/trajectory2.png}
          \caption{Trajectory}
-         \label{fig:NPtraj}
+         \label{fig:2traj}
      \end{subfigure}
      \begin{subfigure}[b]{0.8\textwidth}
          \centering
-         \includegraphics[width=\textwidth]{Latex report/image/ex2/stateNewpole.png}
+         \includegraphics[width=\textwidth]{Latex report/image/ex2/state2.png}
          \caption{Observed state}
-         \label{fig:altEqSim}
+         \label{fig:2State}
      \end{subfigure}
      \begin{subfigure}[b]{0.8\textwidth}
          \centering
-         \includegraphics[width=\textwidth]{Latex report/image/ex2/obsNewpole.png}
+         \includegraphics[width=\textwidth]{Latex report/image/ex2/obs2.png}
          \caption{Comparison with state measurement}
-         \label{fig:simSat}
+         \label{fig:2Obs}
      \end{subfigure}
     \caption{Simulation of the LQR regulator with an observer and new pole placement}
-    \label{fig:simImplEx2}
+    \label{fig:sim2}
 \end{figure}
 
 
@@ -201,15 +230,15 @@ The value of the LQR gain obtained by solving the Riccati equation are :
          \centering
          \includegraphics[width=\textwidth]{Latex report/image/ex2/stateNewpole.png}
          \caption{Observed state}
-         \label{fig:altEqSim}
+         \label{fig:NPState}
      \end{subfigure}
      \begin{subfigure}[b]{0.8\textwidth}
          \centering
          \includegraphics[width=\textwidth]{Latex report/image/ex2/obsNewpole.png}
          \caption{Comparison with state measurement}
-         \label{fig:simSat}
+         \label{fig:NPObs}
      \end{subfigure}
     \caption{Simulation of the LQR regulator with an observer and new pole placement}
-    \label{fig:simImplEx2}
+    \label{fig:NP}
 \end{figure}
 
