@@ -41,17 +41,25 @@ In the following, state measurement is assumed unless stated otherwise and the s
 \subsubsection*{Question 0.1 : Rewrite the non-linear model in the standart form $\bold{\dot{x}} = f(\bold{x}, \bold{u})$}
 \begin{equation}
     \left[ {\begin{array}{c}
-        \dot{x_1}\\
-        \dot{x_2}\\
-        \dot{x_3}\\
-        \dot{x_4}\\
-        \dot{x_5}\\
+        \dot{x}_1\\
+        \dot{x}_2\\
+        \dot{x}_3\\
+        \dot{x}_4\\
+        \dot{x}_5\\
     \end{array} } \right]
     =
     \left[ {\begin{array}{c}
-        \frac{x_4 \cos(x_3)}{1 - x_2\kappa(s)}\\
+        f_1(x)\\
+        f_2(x)\\
+        f_3(x)\\
+        f_4(x)\\
+        f_5(x)\\
+    \end{array} } \right] 
+    =
+    \left[ {\begin{array}{c}
+        \frac{x_4 \cos(x_3)}{1 - x_2\kappa(x_1)}\\
         x_4 \sin(x_3)\\
-        \frac{x_4}{L}\tan(\frac{x_5}{16}) - \frac{\kappa(x) x_4 \cos(x_3)}{1 - x_2 \kappa(s)}\\
+        \frac{x_4}{L}\tan(\frac{x_5}{16}) - \frac{\kappa(x_1) x_4 \cos(x_3)}{1 - x_2 \kappa(x_1)}\\
         \sigma_v (u_1 - x_4)\\
         \sigma_{ref} (u_2 - x_5)\\
     \end{array} } \right]
@@ -67,20 +75,39 @@ There are no such point that are good around the whole trajectory.
 \subsubsection*{Question 0.3 : Calculate the nominal trajectory representing the constant-speed perfect tracking situation (that is, a situation where the vehicle drives perfectly on the path and at a constant speed $\bold{v_{ref}}$ ) for a path of constant curvature $\bold{\kappa_{ref}}$.}
 Several assumption are made that implies the following :
 \begin{itemize}
-    \item $\kappa(s) \longrightarrow \kappa_{ref}$
-    \item $v(s) \longrightarrow v_{ref}$
+    \item Constant path curvature : $\kappa(s) \longrightarrow \kappa_{ref}$
+    \item Constant speed : $v(s) \longrightarrow v_{ref}$
     \item Vehicle drives perfectly on the the path $\longrightarrow$ no error and no error dynamics ($d=0, \dot{d}=0, \theta_e=0, \dot{\theta_e}=0$)
 \end{itemize}
+Thus, we already know $\bar{x}_2(t) = 0$, $\bar{x}_3(t) = 0$, $\bar{x}_4 = u_1$. In order to find $\Bar{x}_1(t)$, one can substitute the known variable in $f_1(x)$
 
+\begin{equation}\begin{align}
+    \dot{\Bar{x}}_1(t) =  \frac{\bar{x}_4 \cos(\bar{x}_3)}{1 - \bar{x}_2\kappa(s)}
+        =v_{ref} = u_1  
+\end{align} \end{equation}
+By integration, one may find :
+\begin{equation}
+    \Bar{x}_1(t) = u_1 t + s_0
+\end{equation}
+\\
+Moreover, to find $\bar{x}_5(t)$,  one may want to use $f_3(t)$ and substitute with the known variable.
+\begin{equation}\begin{align}
+    \dot{\bar{x}}_3 &= f_3(\bar{x}) =
+    \frac{\bar{x}_4}{L}\tan\left(\frac{\bar{x}_5}{16}\right) - \frac{\kappa(\bar{x}_1) \bar{x}_4 \cos(\bar{x}_3)}{1 - x_2 \kappa(\bar{x}_1)} \iff\\
+    0 &= \frac{v_{ref}}{L}\tan\left(\frac{\bar{x}_5}{16}\right) - \kappa_{ref}v_{ref} \iff\\
+    \bar{x}_5 &= 16\tan^{-1}\left(\kappa_{ref}L\right)
+\end{align}\end{equation}
+\\
+ Finally, one can write the nominal trajectory as :
 \begin{equation}
     \bar{x}
     =
     \left[ {\begin{array}{c}
-        \bar{x_1}(t)\\
-        \bar{x_2}(t)\\
-        \bar{x_3}(t)\\
-        \bar{x_4}(t)\\
-        \bar{x_5}(t)\\
+        \bar{x}_1(t)\\
+        \bar{x}_2(t)\\
+        \bar{x}_3(t)\\
+        \bar{x}_4(t)\\
+        \bar{x}_5(t)\\
     \end{array} } \right]
     =
     \left[ {\begin{array}{c}
@@ -142,13 +169,13 @@ Starting from there, the first step is to find the matrices $A$ and $B$ of the l
     \end{array} } \right]
 \end{align}
 
-In a second step, we will evaluate this expansion around our reference trajectory in order to find the matrices $\bar{A}$ and $\bar{B}$.\\
+In a second step, one may evaluate this expansion around the reference trajectory $\Bar{x}$ in order to find the matrices $\bar{A}$ and $\bar{B}$.\\
 \begin{align}
     \bar{A} &= 
     \left[ {\begin{array}{ccccc}
         0 &\kappa_{ref} v_{ref} &0 &1 &0 \\
         0 &0 &v_{ref} &0 &0\\
-        0 &-\kappa_{ref}^2 v_{ref} &0 &0 &\frac{v_{ref}}{16L \cos(16 \tan^{-1}(\kappa_{ref} L))^2}\\
+        0 &-\kappa_{ref}^2 v_{ref} &0 &0 &\frac{v_{ref}}{16L \cos(\tan^{-1}(\kappa_{ref} L))^2}\\
         0 &0 &0 &-\sigma_v &0\\
         0 &0 &0 &0 &-\sigma_{\phi}
     \end{array} } \right]
@@ -157,7 +184,7 @@ In a second step, we will evaluate this expansion around our reference trajector
     \bar{B} = B
 \end{equation}
 
-Finally, because state measurement is assumed, $C$ is simply the idendity matrix, while $D = 0$. The system can be written : 
+Finally, because state measurement is assumed, $C$ is simply the identity matrix, while $D = 0$. The system can thus be written as : 
 \begin{align}
     \dot{\Tilde{x}} &= \Bar{A}\Tilde{x} + \Bar{B}\Tilde{u}\\
     \Tilde{y} &= \Tilde{x}
@@ -165,6 +192,42 @@ Finally, because state measurement is assumed, $C$ is simply the idendity matrix
 
 
 \subsubsection*{Question 0.5 : Discretize the system using Euler approximation.}
-At first, one need to rewrite the state dynamic arround
+With the small signal linear system found previously, one may want to discretize the system. The following formulation uses the euler approximation :\\
+
+\begin{equation}\begin{align}
+    \Tilde{x}(k+1) &= \Tilde{x}(k) + \Delta t \Bar{A}\Tilde{x}(k) + \Bar{B}\Tilde{u}\\
+    &= \underbrace{\left(I + \Delta t \Bar{A}\right)}_{\Phi} \Tilde{x}(k) + \underbrace{\Delta t \Bar{B}}_{\Gamma}\Tilde{u}(k)\\
+    &= \Phi \Tilde{x}(k) + \Gamma \Tilde{u}(k)
+\end{align}\end{equation}
+\\
+One may know compute the discretize state space matrix $\Phi$ and $\Gamma$, with $\Delta t$ equal to one sampling period $\tau_s$ :
+
+\begin{equation}
+    \Phi 
+    =
+    I + \Delta t \Bar{A}
+    =
+    \left[ {\begin{array}{ccccc}
+        1 &\kappa_{ref} v_{ref}\tau_s &0 &\tau_s &0 \\
+        0 &1 &v_{ref}\tau_s &0 &0\\
+        0 &-\kappa_{ref}^2 v_{ref}\tau_s &1 &0 &\frac{v_{ref}\tau_s}{16L \cos(\tan^{-1}(\kappa_{ref} L))^2}\\
+        0 &0 &0 &1-\sigma_v \tau_s&0\\
+        0 &0 &0 &0 &1-\sigma_{\phi}\tau_s
+    \end{array} } \right]
+\end{equation}
+
+\begin{equation}
+    \Gamma 
+    =
+    \Delta t \Bar{B}
+    =
+    \left[ {\begin{array}{cc}
+        0 &0\\
+        0 &0\\
+        0 &0\\
+        \sigma_v \tau_s &0\\
+        0 &\sigma_{\phi} \tau_s\\
+    \end{array} } \right]
+\end{equation}
 
 
