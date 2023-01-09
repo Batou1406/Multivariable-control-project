@@ -22,9 +22,9 @@
 \subsubsection*{System's model}
 With the variable defined above, one may write the dynamic of the system with the following equations :
 \begin{align}
-    \dot{s} &= \frac{v cos(\theta_e)}{1 - d\kappa(s)}\\
-    \dot{d} &= v sin(\theta_e)\\
-    \dot{\theta_e} &= \frac{v}{L}tan(\frac{\phi}{16}) - \kappa(s)\dot{s}\\
+    \dot{s} &= \frac{v \cos(\theta_e)}{1 - d\kappa(s)}\\
+    \dot{d} &= v \sin(\theta_e)\\
+    \dot{\theta_e} &= \frac{v}{L}\tan(\frac{\phi}{16}) - \kappa(s)\dot{s}\\
     \dot{v} &= \sigma_v (v_{ref} - v)\\
     \dot{\phi} &= \sigma_{ref} (\phi_{ref} - \phi)\\
 \end{align}
@@ -49,9 +49,9 @@ In the following, state measurement is assumed unless stated otherwise and the s
     \end{array} } \right]
     =
     \left[ {\begin{array}{c}
-        \frac{x_4 cos(x_3)}{1 - x_2\kappa(s)}\\
-        x_4 sin(x_3)\\
-        \frac{x_4}{L}tan(\frac{x_5}{16}) - \frac{\kappa(x) x_4 cos(x_3)}{1 - x_2 \kappa(s)}\\
+        \frac{x_4 \cos(x_3)}{1 - x_2\kappa(s)}\\
+        x_4 \sin(x_3)\\
+        \frac{x_4}{L}\tan(\frac{x_5}{16}) - \frac{\kappa(x) x_4 \cos(x_3)}{1 - x_2 \kappa(s)}\\
         \sigma_v (u_1 - x_4)\\
         \sigma_{ref} (u_2 - x_5)\\
     \end{array} } \right]
@@ -88,14 +88,26 @@ Several assumption are made that implies the following :
         0\\
         0\\
         u_1\\
-        16 tan^{-1}(\kappa_{ref} L)\\
+        16 \tan^{-1}(\kappa_{ref} L)\\
     \end{array} } \right]
+    \label{eq:trajectory}
 \end{equation}
 
 
 
 \subsubsection*{Question 0.4 : Linearize the system around such a nominal trajectory.}
-By using T
+In this part, we will introduce the linearized model of the system. The linearization is done around a point, or in our case, around a trajectory (equation \ref{eq:trajectory}) and for this purpose, we will introduce the small signal linearization, which is the deviation of the state from an nominal point/trajectory.\\
+\\
+Small signal linerization :
+\begin{equation}
+    \begin{align}
+        \Tilde{x} &= x - \Bar{x}\\
+        \Tilde{y} &= y - \Bar{y}\\
+        \Tilde{u} &= u - \Bar{u}  
+    \end{align}
+\end{equation}
+
+Starting from there, the first step is to find the matrices $A$ and $B$ of the linear system using the first order Taylor expansion of the non-linear model.
 \begin{align}
     A &= 
     \left[ {\begin{array}{cccc}
@@ -105,9 +117,9 @@ By using T
         \frac{\partial f_n}{\partial x_1} & \frac{\partial f_n}{\partial x_2} & \cdots & \frac{\partial f_n}{\partial x_n}\\
     \end{array} } \right] = 
     \left[ {\begin{array}{ccccc}
-        0 &\frac{\kappa_{ref} x_4 cos(x_3)}{(1 -x_2\kappa_{ref})^2} &\frac{-x_4sin(x_3)}{1-x_2\kappa_{ref}} &1 &0 \\
-        0 &0 &x_4cos(x_3) &0 &0\\
-        -\kappa_{ref} &\frac{-\kappa_{ref}x_4 cos(x_3)}{(1 - x_2\kappa_{ref})^2} &\frac{\kappa_{ref}x_4 sin(x_3)}{1 - x_2\kappa_{ref}} &0 & \frac{x_4}{16 L cos^2(x_5)}\\
+        0 &\frac{\kappa_{ref} x_4 \cos(x_3)}{(1 -x_2\kappa_{ref})^2} &\frac{-x_4 \sin(x_3)}{1-x_2\kappa_{ref}} &\frac{\cos(x_2)}{1 - x_2 \kappa_{ref}} &0 \\
+        0 &0 &x_4 \cos(x_3) &\sin(x_3) &0\\
+        0 &\frac{-\kappa_{ref}^2 x_4 \cos(x_3)}{(1 - x_2\kappa_{ref})^2} &\frac{\kappa_{ref}x_4 \sin(x_3)}{1 - x_2\kappa_{ref}} &\frac{\tan(\frac{x_5}{16})}{L} - \frac{\kapp_{ref} \cos(x_3)}{1 - x_2 \kappa_{ref}} & \frac{x_4}{16 L\cos(\frac{x_5}{16})^2}\\
         0 &0 &0 &-\sigma_v &0\\
         0 &0 &0 &0 &-\sigma_{\phi}
     \end{array} } \right]
@@ -130,12 +142,25 @@ By using T
     \end{array} } \right]
 \end{align}
 
-
+In a second step, we will evaluate this expansion around our reference trajectory in order to find the matrices $\bar{A}$ and $\bar{B}$.\\
+\begin{align}
+    \bar{A} &= 
+    \left[ {\begin{array}{ccccc}
+        0 &\kappa_{ref} v_{ref} &0 &1 &0 \\
+        0 &0 &v_{ref} &0 &0\\
+        0 &-\kappa_{ref}^2 v_{ref} &0 &0 &\frac{v_{ref}}{16L \cos(16 \tan^{-1}(\kappa_{ref} L))^2}\\
+        0 &0 &0 &-\sigma_v &0\\
+        0 &0 &0 &0 &-\sigma_{\phi}
+    \end{array} } \right]
+\end{align}
+\begin{equation}
+    \bar{B} = B
+\end{equation}
 
 Finally, because state measurement is assumed, $C$ is simply the idendity matrix, while $D = 0$. The system can be written : 
 \begin{align}
-    \dot{x} &= Ax + Bu\\
-    y &= Cx + Du
+    \dot{\Tilde{x}} &= \Bar{A}\Tilde{x} + \Bar{B}\Tilde{u}\\
+    \Tilde{y} &= \Tilde{x}
 \end{align}
 
 
