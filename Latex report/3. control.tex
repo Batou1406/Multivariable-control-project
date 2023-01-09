@@ -1,4 +1,30 @@
 \subsection{ Report the value of the LQR gain for the proposed Q1 and Q2, as well as the evolution of the singular values of S obtained while solving the Riccati equation}
+The proposed $Q_1$ and $Q_2$ are :
+\begin{equation}
+    Q_1 = 
+    \left[ {\begin{array}{ccccc}
+        1e-5 &0  &0   &0   &0     \\
+        0    &50 &0   &0   &0     \\
+        0    &0  &0.5 &0   &0     \\
+        0    &0  &0   &0.5 &0     \\
+        0    &0  &0   &0   &0.5   \\
+    \end{array} } \right]    
+    ,\quad
+    Q_2 =
+    \left[ {\begin{array}{cc}
+        1 &0\\
+        0 &2e-5\\
+    \end{array} } \right]
+\end{equation}
+
+The value of the LQR gain obtained by solving the Riccati equation are :
+\begin{equation}
+    K_{LQR} = 
+    \left[ {\begin{array}{ccccc}
+         1.5641e-4 &0       &0      &0.2235 &0      \\
+         0         &199.056 &722.53 &0      &19.474 \\
+    \end{array}}\right]
+\end{equation}
 
 
 \subsection{Report the explicit value of the observation close loop poles, and the observer gain resulting
