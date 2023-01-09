@@ -115,9 +115,40 @@ Then by placing the poles of the observer, one may find the following observer g
 
 
 \subsection{The proposed value of Q1 intends to assign very little importance to the error deriving from x1. Could you explain why doing this might make sense?}
+First of all, $x_1$ represents $s$, the distance travelled along the path, which is a function of all the other variables (indirectly for $x_5$), whereas none of the other variables is a function of $x_1$. Therefore, all corrections to the other variables correct $x_1$, whereas corrections to $x_1$ do not correct the other variables. For example, correcting $x_2$ or $x_3$, which represent tracking errors, allows $X_1$ to be controlled efficiently. Indeed, if $x_2$ and $x_3$ are zero, then we are sure to be on the path.
+On the other hand, if we give great importance to the control of $x_1$, we would inevitably induce more error in the other variables, which as we have seen, induce error in $x_1$, which would be counterproductive. Therefore it make completly sense to assign very little weight to the control of $x_1$
+
 
 
 \subsection{Propose a different pair Q1 and Q2 such that heading deviation error is highly penalized compared to the other states and report simulation results where the impact of doing so can be clearly observed.}
+The new proposed $Q_1$ and $Q_2$ are :
+\begin{equation}
+    Q_1 = 
+    \left[ {\begin{array}{ccccc}
+        1e-5 &0   &0   &0   &0     \\
+        0    &0.5 &0   &0   &0     \\
+        0    &0   &50  &0   &0     \\
+        0    &0   &0   &0.5 &0     \\
+        0    &0   &0   &0   &0.5   \\
+    \end{array} } \right]    
+    ,\quad
+    Q_2 =
+    \left[ {\begin{array}{cc}
+        1 &0\\
+        0 &2e-5\\
+    \end{array} } \right]
+\end{equation}
+
+The value of the LQR gain obtained by solving the Riccati equation are :
+\begin{equation}
+    K_{LQR} = 
+    \left[ {\begin{array}{ccccc}
+         3.99e-4 &0       &0       &0.2237 &0      \\
+         0         &20.067 &304.03 &0      &19.308 \\
+    \end{array}}\right]
+\end{equation}
+
+
 
 
 \subsection{Is the proposed placement for the observation close loop poles appropriate? why? If not,propose a new set of poles to improve the observation performance.}
