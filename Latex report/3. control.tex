@@ -26,10 +26,45 @@ The value of the LQR gain obtained by solving the Riccati equation are :
     \end{array}}\right]
 \end{equation}
 
+While the evolution of the singular values of $S$ obtained while while solving the Riccati equation is displayed below :
+\begin{figure}[H]
+    \centering
+    \includegraphics[width = 0.7\linewidth]{Latex report/image/ex2/svds.png}
+    \caption{Evolution of singular values of S while solving the Riccati equation}
+    \label{fig:svds}
+\end{figure}
+
+
+
 
 \subsection{Report the explicit value of the observation close loop poles, and the observer gain resulting
 from it.}
+The poles of the observer were designed to be 99.9\% of the poles of the closed loop dynamics and the following values have been found (3 significant digits) :
 
+\begin{equation}
+    \text{Observer poles :}
+    \left[\begin{array}{c}
+         0.999\\
+         0.987\\
+         0.0154\\
+         0.985 + 0.0137i\\
+         0.985 - 0.0137i\\
+    \end{array}
+    \right]
+\end{equation}
+
+Then by placing the poles of the observer, one may find the following observer gain :
+
+\begin{equation}
+    L = 
+    \left[ {\begin{array}{ccccc}
+        0.9845 &0  &0      &0.01   &0         \\
+        0      &50 &0.0299 &0      &0         \\
+        0      &0  &0.0083 &0      &0.0008    \\
+        0      &0  &0      &0.0032 &0         \\
+        0      &0  &0      &0      &-0.0478   \\
+    \end{array} } \right] 
+\end{equation}
 
 \subsection{Provide a screen shot of your final Simulink scheme and the submodules you had to complete.}
 
