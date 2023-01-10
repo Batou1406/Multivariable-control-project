@@ -146,8 +146,8 @@ The simulation with the proposed values is very satisfactory, the path is follow
 \end{figure}
 
 \subsection{The proposed value of Q1 intends to assign very little importance to the error deriving from x1. Could you explain why doing this might make sense?}
-First of all, $x_1$ represents $s$, the distance travelled along the path, which is a function of all the other variables (indirectly for $x_5$), whereas none of the other variables is a function of $x_1$. Therefore, all corrections to the other variables correct $x_1$, whereas corrections to $x_1$ do not correct the other variables. For example, correcting $x_2$ or $x_3$, which represent tracking errors, allows $X_1$ to be controlled efficiently. Indeed, if $x_2$ and $x_3$ are zero, then we are sure to be on the path.
-On the other hand, if we give great importance to the control of $x_1$, we would inevitably induce more error in the other variables, which as we have seen, induce error in $x_1$, which would be counterproductive. Therefore it make completly sense to assign very little weight to the control of $x_1$
+
+First, $x_1$ represents $s$, the distance travelled along the path, which is a function of all the other variables (indirectly for $x_5$), whereas none of the other variables is a function of $x_1$. This means that if there is no error (or accumulated error) in the other variables, there is none in $x_1$ either. Efficiently controlling $x_2$, $x_3$, $x_4$ and $x_5$ also controls $x_1$. Moreover, the error in $x_1$ represents the time advance or delay that the vehicle has on the path, which will result in accelerating or decelerating the vehicle (term $K_{LQR,11}$). One can imagine that if the vehicle accelerates greatly, it becomes increasingly difficult or impossible to control the vehicle. To have a robust controller, it is therefore natural to limit the weight of the error in $x_1$.
 
 
 
@@ -227,6 +227,8 @@ As mentioned above, the control of the vehicle with these new parameters failed 
          0.00994 - 205e-5i\\
     \end{array}\right]
 \end{equation}
+
+It turns out that with this new observer, the vehicle is again very well controlled and follows the reference path correctly. We can see that the estimated state has no error at all compared to the true state which was not the case with the two previous simulations, which suggest that the observer was correctly tune this time.
 
 \begin{figure}[H]
     \centering
