@@ -68,7 +68,8 @@ In the following, state measurement is assumed unless stated otherwise and the s
 
 
 \subsubsection*{Question 0.2 : Given the chosen state space, why it wouldn’t be appropriate linearizing the system around a nominal point.}
-There are no such point that are good around the whole trajectory.
+
+For the given state space, there is no valid point on the whole path, so approximation errors would be inevitable. This can be easily represented by considering the variable $x_1$, which is nothing but the distance travelled on the path. The only way for a point to represent it correctly is for the vehicle to be stationary, and for the reference trajectory to be limited to a point. Otherwise, as soon as the vehicle is in motion, $x_1$ has a time dependency and cannot be correctly represented by a point. It is therefore necessary to linearise around a trajectory in order to limit the error of the model.
 
 
 
@@ -200,7 +201,7 @@ With the small signal linear system found previously, one may want to discretize
     &= \Phi \Tilde{x}(k) + \Gamma \Tilde{u}(k)
 \end{align}\end{equation}
 \\
-One may know compute the discretize state space matrix $\Phi$ and $\Gamma$, with $\Delta t$ equal to one sampling period $\tau_s$ :
+One may now compute the discretize state space matrix $\Phi$ and $\Gamma$, with $\Delta t$ equal to one sampling period $\tau_s$ :
 
 \begin{equation}
     \Phi 
