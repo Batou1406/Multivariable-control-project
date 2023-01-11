@@ -113,32 +113,38 @@ Then by placing the poles of the observer, one may find the following observer g
 \end{figure}
 
 \subsection{Report the simulation results for the proposed values.}
-The simulation with the proposed values is very satisfactory, the path is followed perfectly, with almost no visible errors. In the estimation of the $x_3$ state, there are a tiny bit of irregularities. This could be corrected with a little bit of tuning, but it is not a problem for the control. We can see that the speed is almost constant (less than 1\% variation), so the vehicle is on time on the path, which means that there is very little error in the other variables.
+The simulation with the proposed values is very satisfactory, the path is followed almost perfectly, with very little visible errors, in both cases : state measurement or observed state. In the estimation of the $x_3$ state, there are a tiny bit of irregularities, with the observer, which then leads to some error in control, especially in the heading error. This make sens and was awaited since, its the state variable with can't measure and have to estimate it. However, this could be corrected with a little bit of tuning, but it is not a problem for the overall control, since the vehicle still stay nicely on the track. We can see that the speed is almost constant (less than 1\% variation), so the vehicle is on time on the path, which tends to indicate that there is very little error in the other variables.
 
 \begin{figure}[H]
     \centering
      \begin{subfigure}[b]{0.47\textwidth}
          \centering
-         \includegraphics[width=\textwidth]{Latex report/image/ex2/input.png}
-         \caption{Control input}
-         \label{fig:input}
+         \includegraphics[width=\textwidth]{Latex report/image/ex2/trajectory1.png}
+         \caption{Trajectory with state measurement}
+         \label{fig:traj21}
      \end{subfigure}
-     \begin{subfigure}[b]{0.45\textwidth}
+     \begin{subfigure}[b]{0.47\textwidth}
          \centering
          \includegraphics[width=\textwidth]{Latex report/image/ex2/trajectory.png}
-         \caption{Trajectory}
-         \label{fig:traj}
+         \caption{Trajectory with Observed state}
+         \label{fig:traj22}
      \end{subfigure}
-     \begin{subfigure}[b]{0.8\textwidth}
+     \begin{subfigure}[b]{0.47\textwidth}
          \centering
-         \includegraphics[width=\textwidth]{Latex report/image/ex2/state.png}
-         \caption{Observed state}
-         \label{fig:State}
+         \includegraphics[width=\textwidth]{Latex report/image/ex2/input1.png}
+         \caption{Control input with state measurement}
+         \label{fig:input21}
      \end{subfigure}
-     \begin{subfigure}[b]{0.8\textwidth}
+     \begin{subfigure}[b]{0.47\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{Latex report/image/ex2/input.png}
+         \caption{Control input with Observed state}
+         \label{fig:input22}
+     \end{subfigure}
+     \begin{subfigure}[b]{0.95\textwidth}
          \centering
          \includegraphics[width=\textwidth]{Latex report/image/ex2/obs.png}
-         \caption{Comparison with state measurement}
+         \caption{Comparison of the states between state measurement and Observed state}
          \label{fig:Obs}
      \end{subfigure}
     \caption{Simulation of the LQR regulator with an observer and new pole placement}
