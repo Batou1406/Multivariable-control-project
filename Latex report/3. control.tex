@@ -66,6 +66,8 @@ Then by placing the poles of the observer, one may find the following observer g
     \end{array} } \right] 
 \end{equation}
 
+As a reminder, the Observer initial state has been set to zero. This will hold for every simulation.
+
 \subsection{Provide a screen shot of your final Simulink scheme and the submodules you had to complete.}
 
 \begin{figure}[H]
@@ -147,7 +149,7 @@ The simulation with the proposed values is very satisfactory, the path is follow
          \caption{Comparison of the states between state measurement and Observed state}
          \label{fig:Obs}
      \end{subfigure}
-    \caption{Simulation of the LQR regulator with an observer and new pole placement}
+    \caption{Simulation of the LQR regulator with and without an observer}
     \label{fig:sim}
 \end{figure}
 
@@ -184,45 +186,48 @@ The value of the LQR gain obtained by solving the Riccati equation are :
          0         &20.067 &304.03 &0      &19.308 \\
     \end{array}}\right]
 \end{equation}
-
-This time, the vehicle is no longer tracked on the path and control is completely lost. This is partly due to the fact that the control of $x_3$ is aggressive while this variable is not measured but estimated. There is a discrepancy between the real and assumed initial state. The observer is too slow to correct this error and the control gets out of hand.
+This time, the control problem is more challenging, thus a simpler reference path has been chosen. Even though, the vehicle is no longer tracked on the path and control is completely lost. This is partly due to the fact that the control of $x_3$ is aggressive (large weight on $x_3$ in $Q_1$) while this variable is not measured but estimated. There is a discrepancy between the real and estimated state of $x_3$. The observer is too slow to correct this error, which then induce more error in the tracking of the path until the control gets finally out of hand. Tuning of the observer dynamics is further needed to achieve control of the vehicle. Indeed, the observer dynamic is almost equal to the dynamic of the system, which is too slow to correct estimation error on $x_3$.
 
 \begin{figure}[H]
     \centering
-     \begin{subfigure}[b]{0.45\textwidth}
+     \begin{subfigure}[b]{0.47\textwidth}
          \centering
-         \includegraphics[width=\textwidth]{Latex report/image/ex2/input2.png}
-         \caption{Control input}
-         \label{fig:2input}
+         \includegraphics[width=\textwidth]{Latex report/image/ex2/trajectory12.png}
+         \caption{Trajectory with state measurement}
+         \label{fig:traj31}
      \end{subfigure}
-     \begin{subfigure}[b]{0.45\textwidth}
+     \begin{subfigure}[b]{0.47\textwidth}
          \centering
          \includegraphics[width=\textwidth]{Latex report/image/ex2/trajectory2.png}
-         \caption{Trajectory}
-         \label{fig:2traj}
+         \caption{Trajectory with Observed state}
+         \label{fig:traj32}
      \end{subfigure}
-     \begin{subfigure}[b]{0.8\textwidth}
+     \begin{subfigure}[b]{0.47\textwidth}
          \centering
-         \includegraphics[width=\textwidth]{Latex report/image/ex2/state2.png}
-         \caption{Observed state}
-         \label{fig:2State}
+         \includegraphics[width=\textwidth]{Latex report/image/ex2/input12.png}
+         \caption{Control input with state measurement}
+         \label{fig:input31}
      \end{subfigure}
-     \begin{subfigure}[b]{0.8\textwidth}
+     \begin{subfigure}[b]{0.47\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{Latex report/image/ex2/input2.png}
+         \caption{Control input with Observed state}
+         \label{fig:input32}
+     \end{subfigure}
+     \begin{subfigure}[b]{0.95\textwidth}
          \centering
          \includegraphics[width=\textwidth]{Latex report/image/ex2/obs2.png}
-         \caption{Comparison with state measurement}
-         \label{fig:2Obs}
+         \caption{Comparison of the states between state measurement and Observed state}
+         \label{fig:Obs2}
      \end{subfigure}
     \caption{Simulation of the LQR regulator with an observer and new pole placement}
     \label{fig:sim2}
 \end{figure}
 
 
-
-
 \subsection{Is the proposed placement for the observation close loop poles appropriate? why? If not,propose a new set of poles to improve the observation performance.}
 
-As mentioned above, the control of the vehicle with these new parameters failed because the observer was too slow to correct the error in the estimation of the initial state and so the control got carried away and could not catch up. One solution is to impose a more aggressive dynamic on the estimation of the initial state on the observer. In the results below, the poles of the observer have been chosen to be 1\% of the poles of the system dynamics.
+As mentioned above, the control of the vehicle with these new parameters failed because the observer was too slow to correct the error in the estimation of between the states and so the control got carried away and could not catch up. One solution is to impose a more aggressive dynamic on the estimation of the states on the observer. In the results below, the poles of the observer have been chosen to be 1\% of the poles of the system dynamics.
 \begin{equation}
     \text{Observer poles :}
     \left[\begin{array}{c}
@@ -234,7 +239,7 @@ As mentioned above, the control of the vehicle with these new parameters failed 
     \end{array}\right]
 \end{equation}
 
-It turns out that with this new observer, the vehicle is again very well controlled and follows the reference path correctly. We can see that the estimated state has no error at all compared to the true state which was not the case with the two previous simulations, which suggest that the observer was correctly tune this time.
+It turns out that with this new observer, the vehicle is again very well controlled and follows the reference path correctly. We can see that the estimated state has no error at all compared to the true state which was not the case with the two previous simulations, which suggest that the observer was correctly tune this time. Since, for this last simulation, its the observer's performances that are evaluated, only its results are presented for visibility purpose.
 
 \begin{figure}[H]
     \centering
